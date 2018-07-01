@@ -36,12 +36,12 @@ namespace CMSApp.Controllers
                     contacts = JsonConvert.DeserializeObject<List<Contact>>(responseData);
                     return View(contacts);
                 }
+                return View("Error");
             }
             catch (Exception)
             {
                 throw;
             }
-            return View(contacts);
         }
 
         // GET: ContactsMV/Details/5
@@ -66,12 +66,12 @@ namespace CMSApp.Controllers
                     }
                     return View(contact);
                 }
+                return View("Error");
             }
             catch (Exception)
             {
                 throw;
             }
-            return View(contact);
         }
 
         // GET: ContactsMV/Create
@@ -99,17 +99,14 @@ namespace CMSApp.Controllers
                         //return View(contacts);
                         return RedirectToAction("Index");
                     }
+                    return View("Error");
                 }
                 catch (Exception)
                 {
                     throw;
                 }
-                //    db.Contacts.Add(contact);
-                //    db.SaveChanges();
-                //    return RedirectToAction("Index");
             }
-
-            return View(contact);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // GET: ContactsMV/Edit/5
@@ -134,12 +131,12 @@ namespace CMSApp.Controllers
                     }
                     return View(contact);
                 }
+                return View("Error");
             }
             catch (Exception)
             {
                 throw;
             }
-            return View(contact);
         }
 
         // POST: ContactsMV/Edit/5
@@ -161,12 +158,12 @@ namespace CMSApp.Controllers
                         return RedirectToAction("Index");
                     }
                 }
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             catch (Exception)
             {
                 throw;
             }
-            return View(contact);
         }
 
         // GET: ContactsMV/Delete/5
@@ -191,12 +188,12 @@ namespace CMSApp.Controllers
                     }
                     return View(contact);
                 }
+                return View("Error");
             }
             catch (Exception)
             {
                 throw;
             }
-            return HttpNotFound();
         }
 
         // POST: ContactsMV/Delete/5
@@ -213,21 +210,12 @@ namespace CMSApp.Controllers
                 {
                     return RedirectToAction("Index");
                 }
+                return HttpNotFound();
             }
             catch (Exception)
             {
                 throw;
             }
-            return HttpNotFound();
         }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using CMSApp.ExceptionLogger;
+using System.Web;
 using System.Web.Mvc;
 
 namespace CMSApp

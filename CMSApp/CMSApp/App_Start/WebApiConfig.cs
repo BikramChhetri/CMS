@@ -25,6 +25,7 @@ namespace CMSApp
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            config.Filters.Add(new ExceptionLogger.LogWriter());
         }
     }
 }

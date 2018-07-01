@@ -1,6 +1,8 @@
 ﻿using CMSApp.Models;
 using CMSApp.Models.DataAccessLayer.Factory;
 using CMSApp.Services;
+using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -47,7 +49,7 @@ namespace CMSApp.Controllers
             using (var context = new ContextFactory().CreateContext(hardCodedInitialCatalog))
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
-                var result = await this.contactService.AddContactAsync(context, contact, cancellationTokenSource.Token);
+                await this.contactService.AddContactAsync(context, contact, cancellationTokenSource.Token);
                 return Ok();
             }
         }
@@ -59,7 +61,7 @@ namespace CMSApp.Controllers
             using (var context = new ContextFactory().CreateContext(hardCodedInitialCatalog))
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
-                var result = await this.contactService.UpdateContactAsync(context, contact, cancellationTokenSource.Token);
+                await this.contactService.UpdateContactAsync(context, contact, cancellationTokenSource.Token);
                 return Ok();
             }
         }
@@ -71,7 +73,7 @@ namespace CMSApp.Controllers
             using (var context = new ContextFactory().CreateContext(hardCodedInitialCatalog))
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
-                var result = await this.contactService.DeleteContactAsync(context, id, setStatusTo, cancellationTokenSource.Token);
+                await this.contactService.DeleteContactAsync(context, id, setStatusTo, cancellationTokenSource.Token);
                 return Ok();
             }
         }
