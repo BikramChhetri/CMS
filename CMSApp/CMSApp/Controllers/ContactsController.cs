@@ -2,6 +2,7 @@
 using CMSApp.Models.DataAccessLayer.Factory;
 using CMSApp.Services;
 using System;
+using System.Configuration;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,8 +12,8 @@ namespace CMSApp.Controllers
 {
     public class ContactsController : ApiController
     {
-        const string hardCodedInitialCatalog = "ContactsDB";
-
+        //const string hardCodedInitialCatalog = "ContactsDB";
+        private readonly string hardCodedInitialCatalog = ConfigurationManager.AppSettings["initialCatalog"];
         private readonly IContactService contactService;
         public ContactsController(IContactService contactService)
         {

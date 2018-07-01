@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace CMSApp.Controllers
 {
@@ -15,7 +16,7 @@ namespace CMSApp.Controllers
     {
         private ContactContext db = new ContactContext();
         private HttpClient client;
-        string url = "http://localhost:62842/api/Contacts";
+        string url = ConfigurationManager.AppSettings["baseApiPath"];
         public ContactsMVController()
         {
             client = new HttpClient();
