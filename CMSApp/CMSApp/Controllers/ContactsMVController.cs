@@ -8,17 +8,44 @@ using System.Web;
 using System.Web.Mvc;
 using CMSApp.Models;
 using CMSApp.Models.DataAccessLayer;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace CMSApp.Controllers
 {
     public class ContactsMVController : Controller
     {
         private ContactContext db = new ContactContext();
-
-        // GET: ContactsMV
-        public ActionResult Index()
+        private HttpClient client;
+        string url = "http://localhost:62842/api/Contacts";
+        public ContactsMVController()
         {
-            return View(db.Contacts.ToList());
+            client = new HttpClient();
+            client.BaseAddress = new Uri(url);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+        // GET: ContactsMV
+        public async Task<ActionResult> Index()
+        {
+            List<Contact> contacts = new List<Contact>();
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(url);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseData = responseMessage.Content.ReadAsStringAsync().Result;
+                    contacts = JsonConvert.DeserializeObject<List<Contact>>(responseData);
+                    return View(contacts);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View(contacts);
         }
 
         // GET: ContactsMV/Details/5
