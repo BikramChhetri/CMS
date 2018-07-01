@@ -49,16 +49,31 @@ namespace CMSApp.Controllers
         }
 
         // GET: ContactsMV/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
-            if (id == null)
+            Contact contact = new Contact();
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                var actionUrl = $"{url}/{id}";
+                HttpResponseMessage responseMessage = await client.GetAsync(actionUrl);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseData = responseMessage.Content.ReadAsStringAsync().Result;
+                    contact = JsonConvert.DeserializeObject<Contact>(responseData);
+                    if (contact == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(contact);
+                }
             }
-            Contact contact = db.Contacts.Find(id);
-            if (contact == null)
+            catch (Exception)
             {
-                return HttpNotFound();
+                throw;
             }
             return View(contact);
         }
@@ -74,29 +89,59 @@ namespace CMSApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Email,PhoneNumber,Status")] Contact contact)
+        public async Task<ActionResult> Create([Bind(Include = "Id,FirstName,LastName,Email,PhoneNumber,Status")] Contact contact)
         {
             if (ModelState.IsValid)
             {
-                db.Contacts.Add(contact);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    HttpResponseMessage responseMessage = await client.PostAsJsonAsync(url, contact);
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var responseData = responseMessage.Content.ReadAsStringAsync().Result;
+                        //contacts = JsonConvert.DeserializeObject<List<Contact>>(responseData);
+                        //return View(contacts);
+                        return RedirectToAction("Index");
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                //    db.Contacts.Add(contact);
+                //    db.SaveChanges();
+                //    return RedirectToAction("Index");
             }
 
             return View(contact);
         }
 
         // GET: ContactsMV/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
-            if (id == null)
+            Contact contact = new Contact();
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                var actionUrl = $"{url}/{id}";
+                HttpResponseMessage responseMessage = await client.GetAsync(actionUrl);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseData = responseMessage.Content.ReadAsStringAsync().Result;
+                    contact = JsonConvert.DeserializeObject<Contact>(responseData);
+                    if (contact == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(contact);
+                }
             }
-            Contact contact = db.Contacts.Find(id);
-            if (contact == null)
+            catch (Exception)
             {
-                return HttpNotFound();
+                throw;
             }
             return View(contact);
         }
@@ -106,41 +151,78 @@ namespace CMSApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Email,PhoneNumber,Status")] Contact contact)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,Email,PhoneNumber,Status")] Contact contact)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(contact).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    var actionUrl = $"{url}/{contact.Id}";
+                    HttpResponseMessage responseMessage = await client.PutAsJsonAsync(actionUrl, contact);
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var responseData = responseMessage.Content.ReadAsStringAsync().Result;
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return View(contact);
         }
 
         // GET: ContactsMV/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
-            if (id == null)
+            Contact contact = new Contact();
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                var actionUrl = $"{url}/{id}";
+                HttpResponseMessage responseMessage = await client.GetAsync(actionUrl);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseData = responseMessage.Content.ReadAsStringAsync().Result;
+                    contact = JsonConvert.DeserializeObject<Contact>(responseData);
+                    if (contact == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(contact);
+                }
             }
-            Contact contact = db.Contacts.Find(id);
-            if (contact == null)
+            catch (Exception)
             {
-                return HttpNotFound();
+                throw;
             }
-            return View(contact);
+            return HttpNotFound();
         }
 
         // POST: ContactsMV/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id, string setStatusTo)
         {
-            Contact contact = db.Contacts.Find(id);
-            db.Contacts.Remove(contact);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Contact contact = new Contact();
+            try
+            {
+                var actionUrl = $"{url}/{id}?setStatusTo={setStatusTo}";
+                HttpResponseMessage responseMessage = await client.DeleteAsync(actionUrl);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return HttpNotFound();
         }
 
         protected override void Dispose(bool disposing)

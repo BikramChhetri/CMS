@@ -1,12 +1,17 @@
 ﻿@model CMSApp.Models.Contact
 
 @{
-    ViewBag.Title = "Delete";
+    var active = CMSApp.Models.Status.Active;
+    string buttonText = Model.Status == active ? "Deactivate" : "Activate";
+    var setStatusTo = Model.Status == active ? CMSApp.Models.Status.Inactive : active;
+}
+@{
+    ViewBag.Title = buttonText;
 }
 
-<h2>Delete</h2>
+<h2>@buttonText</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to @buttonText the contact?</h3>
 <div>
     <h4>Contact</h4>
     <hr />
@@ -57,7 +62,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="hidden" value=@setStatusTo.ToString() name="setStatusTo" />
+            <input type="submit" value="Confirm" class="btn btn-default btn-success" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
     }

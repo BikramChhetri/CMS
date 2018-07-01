@@ -1,4 +1,5 @@
-﻿using CMSApp.Models.DataAccessLayer.Factory;
+﻿using CMSApp.Models;
+using CMSApp.Models.DataAccessLayer.Factory;
 using CMSApp.Services;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace CMSApp.Controllers
 {
     public class ContactsController : ApiController
     {
-        const string hardCodedInitialCatalog = "CMSApp.Models.DataAccessLayer.ContactContext";
+        //const string hardCodedInitialCatalog = "CMSApp.Models.DataAccessLayer.ContactContext";
+        const string hardCodedInitialCatalog = "ContactDB";
         private readonly IContactService contactService;
         public ContactsController(IContactService contactService)
         {
@@ -32,24 +34,51 @@ namespace CMSApp.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+        [HttpGet]
+        public async Task<IHttpActionResult> GetContact(int id)
         {
-            return "value";
+            using (var context = new ContextFactory().CreateContext(hardCodedInitialCatalog))
+            using (var cancellationTokenSource = new CancellationTokenSource())
+            {
+                var contact = await this.contactService.GetContactByIdAsync(context, id, cancellationTokenSource.Token);
+                return Ok(contact);
+            }
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public async Task<IHttpActionResult> Post([FromBody]Contact contact)
         {
+            using (var context = new ContextFactory().CreateContext(hardCodedInitialCatalog))
+            using (var cancellationTokenSource = new CancellationTokenSource())
+            {
+                var result = await this.contactService.AddContactAsync(context, contact, cancellationTokenSource.Token);
+                return Ok();
+            }
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public async Task<IHttpActionResult> Put(int id, [FromBody]Contact contact)
         {
+            using (var context = new ContextFactory().CreateContext(hardCodedInitialCatalog))
+            using (var cancellationTokenSource = new CancellationTokenSource())
+            {
+                await this.contactService.UpdateContactAsync(context, contact, cancellationTokenSource.Token);
+                return Ok();
+            }
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        [HttpDelete]
+        public async Task<IHttpActionResult> Delete(int id, string setStatusTo)
         {
+            using (var context = new ContextFactory().CreateContext(hardCodedInitialCatalog))
+            using (var cancellationTokenSource = new CancellationTokenSource())
+            {
+                await this.contactService.DeleteContactAsync(context, id, setStatusTo, cancellationTokenSource.Token);
+                return Ok();
+            }
         }
     }
 }
