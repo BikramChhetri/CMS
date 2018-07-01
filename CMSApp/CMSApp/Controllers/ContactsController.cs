@@ -1,11 +1,6 @@
 ﻿using CMSApp.Models;
 using CMSApp.Models.DataAccessLayer.Factory;
 using CMSApp.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -14,8 +9,8 @@ namespace CMSApp.Controllers
 {
     public class ContactsController : ApiController
     {
-        //const string hardCodedInitialCatalog = "CMSApp.Models.DataAccessLayer.ContactContext";
-        const string hardCodedInitialCatalog = "ContactDB";
+        const string hardCodedInitialCatalog = "ContactsDB";
+
         private readonly IContactService contactService;
         public ContactsController(IContactService contactService)
         {
@@ -64,7 +59,7 @@ namespace CMSApp.Controllers
             using (var context = new ContextFactory().CreateContext(hardCodedInitialCatalog))
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
-                await this.contactService.UpdateContactAsync(context, contact, cancellationTokenSource.Token);
+                var result = await this.contactService.UpdateContactAsync(context, contact, cancellationTokenSource.Token);
                 return Ok();
             }
         }
@@ -76,7 +71,7 @@ namespace CMSApp.Controllers
             using (var context = new ContextFactory().CreateContext(hardCodedInitialCatalog))
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
-                await this.contactService.DeleteContactAsync(context, id, setStatusTo, cancellationTokenSource.Token);
+                var result = await this.contactService.DeleteContactAsync(context, id, setStatusTo, cancellationTokenSource.Token);
                 return Ok();
             }
         }
