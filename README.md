@@ -34,3 +34,15 @@ Unit test cases: Could not get time to write(I can write if time provided.).<br 
 3. Edit contact.<br />
 4. Delete(Activate/Deactivate) only soft deletethe contact.<br />
 
+#Known issue
+if the below issue occours:
+#The model backing the <Database> context has changed since the database was created.
+  then please uncomment the code.<br/>
+          //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    Database.SetInitializer<ContactContext>(null);
+        //    base.OnModelCreating(modelBuilder);
+        //}<br/>
+  
+  lies in the path: 
+  
