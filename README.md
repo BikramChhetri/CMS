@@ -28,9 +28,9 @@ EntityFramework 6 : ORM.<br />
 Factory Method pattern: used to create a context according to the initialCatalog provid.<br />
 Unit test cases: Could not get time to write(I can write if time provided.).<br />
 
-#functionality covered.<br />
+#functionalities covered.<br />
 1. Get the list of Contacts(all contacts: no filter with inactive or acctive).<br />
 2. Add contact.<br />
 3. Edit contact.<br />
-4. Activate/Deactivate contact.<br />
+4. Delete(Activate/Deactivate) only soft deletethe contact.<br />
 
