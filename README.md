@@ -29,6 +29,8 @@ Factory Method pattern: used to create a context according to the initialCatalog
 Unit test cases: Could not get time to write(I can write if time provided.).<br />
 
 #functionalities covered.<br />
+#PhoneNumber should be provide in a proper format(10 digit), otherwie error thrown and redirected to the error page.
+#This is to show the handled error, and error will log in the given path .txt file.
 1. Get the list of Contacts(all contacts: no filter with inactive or acctive).<br />
 2. Add contact.<br />
 3. Edit contact.<br />
