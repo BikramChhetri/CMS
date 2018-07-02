@@ -19,8 +19,16 @@ namespace CMSApp.Models
         public string FirstName { get; set; }
         [Required, MaxLength(20, ErrorMessage = "More than 20 characters are not allowed.")]
         public string LastName { get; set; }
+
+        [Required DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string PhoneNumber { get; set; }
+
+        [Required]
         public Status Status { get; set; }
     }
 }

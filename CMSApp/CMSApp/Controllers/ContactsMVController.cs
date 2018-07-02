@@ -95,9 +95,6 @@ namespace CMSApp.Controllers
                     HttpResponseMessage responseMessage = await client.PostAsJsonAsync(url, contact);
                     if (responseMessage.IsSuccessStatusCode)
                     {
-                        var responseData = responseMessage.Content.ReadAsStringAsync().Result;
-                        //contacts = JsonConvert.DeserializeObject<List<Contact>>(responseData);
-                        //return View(contacts);
                         return RedirectToAction("Index");
                     }
                     return View("Error");
