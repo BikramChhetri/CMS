@@ -39,7 +39,7 @@ Unit test cases: Could not get time to write(I can write if time provided.).<br 
 
 # Known issue.
 # The below explanation may help you to understand why the issue is persisting.
-The issue is because of enabled of entity-framework code first migration enabled.So that for the first time the table Contacts in created by its own, but if later if application is re started then it re-ccreated the context and tried to get the newly created context.But in code we are pointed to previously created context.
+The issue is because of enabled of entity-framework code first migration enabled.So that for the first time the table Contacts in created by its own(initialize the database and entity), if some entity property changes make then the above issue persists.
 if the below issue occours:
 #The model backing the <Database> context has changed since the database was created.
   then please uncomment the code.<br/>
@@ -52,5 +52,3 @@ if the below issue occours:
   
   lies in the path: 
   CMS/CMSApp/CMSApp/Models/DataAccessLayer/ContactContext.cs.
- 
- #i need to check on this issue.
